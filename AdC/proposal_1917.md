@@ -9,7 +9,7 @@
 |:------|:------|:------|
 |Aの位|1. A'd denep (e.g. ancanpanqan'd denep, xinpanqa'd denep) <br> 2. A-o (e.g. saneno, sino)|どちらの用法についても、それを支持する記述は存在するが、一般的に許容される表現として明示することを提起したい。|
 |数直線|soor'd chai/soorven chai||
-|等号|1. karvaprapt <br> 2. ka'd aprapt <br> 3. kadaprakt <br> 4. korvarapt <br> 5. ko'd aprapt <br> 6. kodaprakt <br> 7. daler <br> 8. dalraprapt|リパライン語の等号=は[燐字の「此」](https://sites.google.com/site/linzizihai/akaibu/ci)に由来する。それが語源となる可能性を考慮すると1.～6.のような語形が想定される。|
+|等号|1. karvakrapt <br> 2. ka'd akrapt <br> 3. kadakrapt <br> 4. korvakrapt <br> 5. ko'd akrapt <br> 6. kodakrapt <br> 7. daler <br> 8. dalrakrapt|リパライン語の等号=は[燐字の「此」](https://sites.google.com/site/linzizihai/akaibu/ci)に由来する。それが語源となる可能性を考慮すると1.～6.のような語形が想定される。|
 |数式|la karse/lurfaerl|現世では「表現」のような表し方が多く確認された。|
 |等式|(右参照)|「等号」「数式」の具体的な語形に影響される蓋然性が高いためここでは語形をあげない。|
 |図形|stiesup|数学用語として用いてよいと思われる。|
@@ -23,7 +23,7 @@
 |:------|:------|:------|
 |不等号|estalle'd akrapt|否定等号を含めるかは非自明である。|
 |不等式|(右参照)|「数式」に依存しうる。|
-|否定等号|nefdalrakrept|「等号」に影響される可能性がある。|
+|否定等号|nefdalrakrapt|「等号」に影響される可能性がある。|
 |筆算|toxa'd litarlergo/toxa'd stusnyp||
 |暗算|vediren litarlergo/vediren stusnyp||
 |被乗数・乗数|(右参照)|リパライン語の場合、"i-'d soor"等の表現が可能なので固定された術語の存在自体非自明である。|
