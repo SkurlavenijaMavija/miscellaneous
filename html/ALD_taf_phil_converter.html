@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>アレークィ通日(ALD), タフター暦, ピリフィアー暦の間の変換器</title>
+</head>
+
+<body>
+    この変換器は次の3つの暦の間の変換をサポートしています：
+    <ul>
+        <li>アレークィ通日(ALD) …タフター暦紀元前3500年第1日の正子からの経過forl数を数える暦。</li>
+        <li>タフター暦 …phil.792年に元年をもつタフターの統一暦で、平年412 forl。7cyrlに2回閏年(411 forlのcyrl)が置かれる。</li>
+        <li>ピリフィアー暦 …ファイクレオネで用いられる太陽暦。1 routは365 snenikで固定。</li>
+    </ul>
+
+    <p>ALD: <input type="number" id="ALD"> forl</p>
+    <p>タフター暦:
+        <select id="box_taf">
+            <option value="CE_taf">紀元後</option>
+            <option value="ACE_taf">紀元前</option>
+        </select>
+        <input type="number" id="dis_cyrl"> cyrl <input type="number" id="dis_forl"> forl の <input type="number"
+            id="dis_cent"> %経過時
+    </p>
+    <p>ピリフィアー暦:
+        <select id="box_phil">
+            <option value="CE_phil">phil.</option>
+            <option value="ACE_phil">mp.</option>
+        </select>
+        <input type="number" id="dis_rout"> rout <input type="number" id="stujesn"> stujesn <input type="number"
+            id="snenik"> snenik
+        <input type="number" id="liestu"> liestu <input type="number" id="rukest"> rukest <input type="number"
+            id="stususn"> stususn
+    </p>
+
+
+    <script>
+        function ALD2taf() {
+            // ALDをタフターにする
+            const $delta_shemittah_A2f = Math.floor(Number(ALD.value) / 2882);
+            const $days_taf_A2f = Number(ALD.value) - 2882 * $delta_shemittah_A2f;
+            // $delta_cyrlと$forlを定義する
+            const $delta_cyrl_A2f =
+                ((0 <= $days_taf_A2f) && ($days_taf_A2f < 411)) ? 0 :
+                    ((411 <= $days_taf_A2f) && ($days_taf_A2f < 823)) ? 1 :
+                        ((823 <= $days_taf_A2f) && ($days_taf_A2f < 1235)) ? 2 :
+                            ((1235 <= $days_taf_A2f) && ($days_taf_A2f < 1647)) ? 3 :
+                                ((1647 <= $days_taf_A2f) && ($days_taf_A2f < 2058)) ? 4 :
+                                    ((2058 <= $days_taf_A2f) && ($days_taf_A2f < 2470)) ? 5 :
+                                        6;
+            const $forl_A2f =
+                ((0 <= $days_taf_A2f) && ($days_taf_A2f < 411)) ? $days_taf_A2f :
+                    ((411 <= $days_taf_A2f) && ($days_taf_A2f < 823)) ? $days_taf_A2f - 411 :
+                        ((823 <= $days_taf_A2f) && ($days_taf_A2f < 1235)) ? $days_taf_A2f - 823 :
+                            ((1235 <= $days_taf_A2f) && ($days_taf_A2f < 1647)) ? $days_taf_A2f - 1235 :
+                                ((1647 <= $days_taf_A2f) && ($days_taf_A2f < 2058)) ? $days_taf_A2f - 1647 :
+                                    ((2058 <= $days_taf_A2f) && ($days_taf_A2f < 2470)) ? $days_taf_A2f - 2058 :
+                                        $days_taf_A2f - 2470;
+            const $ast_cyrl_A2f = 7 * $delta_shemittah_A2f + $delta_cyrl_A2f - 3499;
+            // なんと天文学的暦法は慣習に合わない
+            if (0 < $ast_cyrl_A2f) {
+                box_taf.value = "CE_taf"; dis_cyrl.value = $ast_cyrl_A2f
+            } else {
+                box_taf.value = "ACE_taf"; dis_cyrl.value = 1 - $ast_cyrl_A2f
+            };
+            dis_forl.value = 1 + Math.floor($forl_A2f);
+            dis_cent.value = 100 * ($forl_A2f - Math.floor($forl_A2f))
+        };
+        function ALD2phil() {
+            // ALDをピリフィアーにする
+            const $alq_stu = 107587.909944;
+            const $fai_stu = 108000;
+            const $penulesnej_forl_A2ph = ((500 + 155) * 2882 + 412 * 4 - 1) - ((2016 * 365 * $fai_stu + 1445) / $alq_stu);
+            const $stu_A2ph = $alq_stu * (Number(ALD.value) - $penulesnej_forl_A2ph);
+            const $rout_A2ph = Math.floor($stu_A2ph / (365 * $fai_stu));
+            const $days_fai_A2ph = $stu_A2ph - 365 * $fai_stu * $rout_A2ph;
+            const $stujesn_A2ph = Math.min(12, 1 + Math.floor($days_fai_A2ph / (30 * $fai_stu)));
+            const $snenik_A2ph = 1 + Math.floor(($days_fai_A2ph - 30 * $fai_stu * ($stujesn_A2ph - 1)) / $fai_stu);
+            const $hours_A2ph = $days_fai_A2ph - (30 * ($stujesn_A2ph - 1) + $snenik_A2ph - 1) * $fai_stu;
+            const $liestu_A2ph = Math.floor($hours_A2ph / 4500);
+            const $rukest_A2ph = Math.floor(($hours_A2ph - 4500 * $liestu_A2ph) / 125);
+            const $stususn_A2ph = $hours_A2ph - 4500 * $liestu_A2ph - 125 * $rukest_A2ph;
+            console.log($penulesnej_forl_A2ph*$alq_stu-(((500 + 155) * 2882 + 412 * 4 - 1)*$alq_stu-(2016 * 365 * $fai_stu + 1445)));
+
+
+            // なんでmp.とかいう概念を作った
+            if (0 <= $rout_A2ph) {
+                box_phil.value = "CE_phil"; dis_rout.value = $rout_A2ph
+            } else {
+                box_phil.value = "ACE_phil"; dis_rout.value = -$rout_A2ph
+            };
+            stujesn.value = $stujesn_A2ph;
+            snenik.value = $snenik_A2ph;
+            liestu.value = $liestu_A2ph;
+            rukest.value = $rukest_A2ph;
+            stususn.value = $stususn_A2ph;
+        };
+        function taf2ALD() {
+            // タフターをALDにする
+            const $ast_cyrl_t2A = (box_taf.value == "CE_taf") ? Number(dis_cyrl.value) : 1 - Number(dis_cyrl.value);
+            const $shemittah_distance_t2A = Math.floor(($ast_cyrl_t2A + 3499) / 7);
+            const $delta_cyrl_t2A = ($ast_cyrl_t2A + 3499) - 7 * $shemittah_distance_t2A;
+            const $delta_forl_t2A =
+                ($delta_cyrl_t2A == 0) ? 0 :
+                    ($delta_cyrl_t2A == 1) ? 411 :
+                        ($delta_cyrl_t2A == 2) ? 823 :
+                            ($delta_cyrl_t2A == 3) ? 1235 :
+                                ($delta_cyrl_t2A == 4) ? 1647 :
+                                    ($delta_cyrl_t2A == 5) ? 2058 :
+                                        2470;
+            ALD.value = 2882 * $shemittah_distance_t2A + $delta_forl_t2A + (Number(dis_forl.value) - 1) + (100 * Number(dis_cent.value));
+        };
+        function phil2ALD() {
+            // ピリフィアーをALDにする
+            const penulesnej_forl_ph2A = ((500 + 155) * 2882 + 412 * 4 - 1) - ((2016 * 365 * 108000 + 1445) / 107587.909944);
+            const $ast_rout_ph2A = (box_phil.value == "CE_phil") ? Number(dis_rout.value) : -Number(dis_rout.value);
+            const $delta_snenik_ph2A = (Number(stujesn.value) - 1) * 30 + (Number(snenik.value) - 1) + (Number(liestu.value) / 24) + (Number(rukest.value) / (24 * 36)) + (Number(stususn.value) / 108000);
+            ALD.value = penulesnej_forl_ph2A + ((365 * $ast_rout_ph2A + $delta_snenik_ph2A) * 108000 / 107587.909944);
+        };
+    </script>
+
+    <input type="button" value="ALD基準で計算する" onclick="ALD2taf(); ALD2phil();">
+    <input type="button" value="タフター暦基準で計算する" onclick="taf2ALD(); ALD2phil();">
+    <input type="button" value="ピリフィアー暦基準で計算する" onclick="phil2ALD(); ALD2taf();">
+
+</body>
