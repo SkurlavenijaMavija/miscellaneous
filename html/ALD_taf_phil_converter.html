@@ -9,7 +9,7 @@
     この変換器は次の3つの暦の間の変換をサポートしています：
     <ul>
         <li>アレークィ通日(ALD) …タフター暦紀元前3500年第1日の正子からの経過forl数を数える暦。</li>
-        <li>タフター暦 …phil.792年に元年をもつタフターの統一暦で、平年412 forl。7cyrlに2回閏年(411 forlのcyrl)が置かれる。</li>
+        <li>タフター暦 …phil.792年に元年をもつタフターの統一暦で、平年412 forl。7 cyrlに2回閏年(411 forlのcyrl)が置かれる。</li>
         <li>ピリフィアー暦 …ファイクレオネで用いられる太陽暦。1 routは365 snenikで固定。</li>
     </ul>
 
@@ -66,14 +66,14 @@
                 box_taf.value = "ACE_taf"; dis_cyrl.value = 1 - $ast_cyrl_A2f
             };
             dis_forl.value = 1 + Math.floor($forl_A2f);
-            dis_cent.value = 100 * ($forl_A2f - Math.floor($forl_A2f))
+            dis_cent.value = 100 * (Number(ALD.value) - Math.floor(Number(ALD.value)))
         };
         function ALD2phil() {
             // ALDをピリフィアーにする
             const $alq_stu = 107587.909944;
             const $fai_stu = 108000;
-            const $penulesnej_forl_A2ph = ((500 + 155) * 2882 + 412 * 4 - 1) - ((2016 * 365 * $fai_stu + 1445) / $alq_stu);
-            const $stu_A2ph = $alq_stu * (Number(ALD.value) - $penulesnej_forl_A2ph);
+            const $penulesnej_stu_A2ph = ((500 + 155) * 2882 + 412 * 4 - 1) * $alq_stu - (2016 * 365 * $fai_stu + 1445);
+            const $stu_A2ph = $alq_stu * Number(ALD.value) - $penulesnej_stu_A2ph;
             const $rout_A2ph = Math.floor($stu_A2ph / (365 * $fai_stu));
             const $days_fai_A2ph = $stu_A2ph - 365 * $fai_stu * $rout_A2ph;
             const $stujesn_A2ph = Math.min(12, 1 + Math.floor($days_fai_A2ph / (30 * $fai_stu)));
@@ -82,9 +82,7 @@
             const $liestu_A2ph = Math.floor($hours_A2ph / 4500);
             const $rukest_A2ph = Math.floor(($hours_A2ph - 4500 * $liestu_A2ph) / 125);
             const $stususn_A2ph = $hours_A2ph - 4500 * $liestu_A2ph - 125 * $rukest_A2ph;
-            console.log($penulesnej_forl_A2ph*$alq_stu-(((500 + 155) * 2882 + 412 * 4 - 1)*$alq_stu-(2016 * 365 * $fai_stu + 1445)));
-
-
+            
             // なんでmp.とかいう概念を作った
             if (0 <= $rout_A2ph) {
                 box_phil.value = "CE_phil"; dis_rout.value = $rout_A2ph
@@ -110,7 +108,7 @@
                                 ($delta_cyrl_t2A == 4) ? 1647 :
                                     ($delta_cyrl_t2A == 5) ? 2058 :
                                         2470;
-            ALD.value = 2882 * $shemittah_distance_t2A + $delta_forl_t2A + (Number(dis_forl.value) - 1) + (100 * Number(dis_cent.value));
+            ALD.value = 2882 * $shemittah_distance_t2A + $delta_forl_t2A + (Number(dis_forl.value) - 1) + (Number(dis_cent.value) / 100);
         };
         function phil2ALD() {
             // ピリフィアーをALDにする
